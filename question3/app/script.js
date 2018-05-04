@@ -1,35 +1,52 @@
-window.onload = function() {
-    var dataPoints = [];
 
-    function getDataPointsFromCSV(csv) {
-        var dataPoints = (csvLines = points = []);
-        csvLines = csv.split(/[\r?\n|\r|\n]+/);
+// Splitting and calculating cvs data table to a JSON.
+function dayCalculation(csv) {
+    var lines = csv.split(/\r?\n/g);
 
-        for (var i = 0; i < csvLines.length; i++) {
-            if (csvLines[i].length > 0) {
-                points = csvLines[i].split(";");
-                var count = 0;
-                if (points[2] == "yes") {
+    var list = {};
 
-                    dataPoints.push({
-                        x: new Date(points[0]).getMonth() + 1,
-                        y: Math.random() * 100
-                    });
+    for (var i = 1, ii = lines.length; i < ii; i++) {
+        var splt = lines[i].split(';');
 
-                }
+        if (list[splt[0]]) {
 
-            }
+            list[splt[0]] += splt[2] == "yes" ? 1 : 0;
         }
-        console.log(dataPoints);
-
-        return dataPoints;
+        else {
+            list[splt[0]] = splt[2] == "yes" ? 1 : 0;
+        }
     }
+    return list;
+}
+
+
+
+
+
+// Assigning calculated csv to data points of the chart.
+function getDataPointsFromCSV(csv) {
+
+    var dataPoints = [];
+    var data = {};
+    data = dayCalculation(csv);
+
+    $.each(data, function (i, val) {
+        dataPoints.push({
+            x: new Date(i).getMonth() + 1,
+            y: val
+        });
+    });
+
+    return dataPoints;
+}
+
+
+$(window).ready(function () {
+    // Rendering chart and invoke calculation method.
     $.get("data.csv",
-        function(data) {
+        function (data) {
             var chart = new CanvasJS.Chart("chartContainer", {
-                title: {
-                    text: "Formatting Date"
-                },
+
 
                 data: [{
                     type: "line",
@@ -44,4 +61,4 @@ window.onload = function() {
         });
 
 
-};
+});
