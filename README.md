@@ -14,7 +14,7 @@ now you can check <a>http://localhost:3000</a> URL for every solution.
 <hr>
 
 
-<em>Note: I got CORS origin problem on the question4. This reason is I was working on localhost and we should be work on the same domain. 
+<em>Note: I got CORS (Access-Control-Allow-Origin) problem on the question4. This reason is I was working on localhost and we should be work on the same domain. 
 For running project at localhost, please use that command on your terminal/command line.</em>
 
 For Windows users:
